@@ -1,0 +1,22 @@
+# Ignore environment variable files for Rust projects
+.env
+.env.*
+
+# Ignore target directory (build output)
+target/
+
+# Ignore Cargo.lock for libraries (optional)
+# Cargo.lock
+
+# Ignore backup and temporary files
+*.swp
+*.bak
+*.tmp
+
+# Ignore IDE/editor files
+.idea/
+.vscode/
+.DS_Store
+
+# Ignore test output
+*.log
