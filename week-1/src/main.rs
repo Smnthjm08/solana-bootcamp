@@ -27,6 +27,16 @@ fn main() {
 
     let _ = add_parsed("123", "23");
     let _ = parse_csv_sum("1,2,3");
+
+    let nums = [1, 2, 3, 4, 5];
+    println!("sum of squares: {}", sum_of_squares(&nums));
+    println!("doubled: {:?}", double_all(&nums));
+    println!("evens only: {:?}", evens_only(&nums));
+
+    let mut countdown = Countdown::new(5);
+    while let Some(n) = countdown.next() {
+        println!("count: {}", n);
+    }
 }
 
 // functions with return value
@@ -284,3 +294,79 @@ fn parse_csv_sum(s: &str) -> Result<i32, String> {
     Ok(total)
 }
 
+trait Summarize {
+    type Output;
+    fn summarize(&self) -> Self::Output;
+}
+
+struct Numbers {
+    data: Vec<i32>,
+}
+struct Sentence {
+    words: Vec<String>,
+}
+
+// Implement Summarize for Numbers (Output = i32, return sum)
+impl Summarize for Numbers {
+    type Output = i32;
+
+    fn summarize(&self) -> Self::Output {
+        self.data.iter().sum()
+    }
+}
+
+impl Summarize for Sentence {
+    type Output = String;
+
+    fn summarize(&self) -> Self::Output {
+        self.words.join(" ")
+    }
+}
+
+fn double_all(nums: &[i32]) -> Vec<i32> {
+    nums.iter().map(|x| x * 2).collect()
+}
+
+fn sum_of_squares(nums: &[i32]) -> i32 {
+    nums.iter().map(|x| x * x).sum()
+}
+
+fn evens_only(nums: &[i32]) -> Vec<i32> {
+    nums.iter().filter(|&x| *x % 2 == 0).copied().collect()
+}
+
+struct Countdown {
+    n: i32,
+}
+
+impl Countdown {
+    fn new(n: i32) -> Self {
+        Countdown { n }
+    }
+}
+
+impl Iterator for Countdown {
+    type Item = i32;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.n <= 0 {
+            None
+        } else {
+            let current = self.n;
+            self.n -= 1;
+            Some(current)
+        }
+    }
+}
+
+// TODO capstone pending
+use std::collections::HashMap;
+
+fn most_frequent(s: &str) -> String {
+    let mut map = HashMap::new();
+    for i in s.split_whitespace() {
+        *map.entry(i).or_insert(0) += 1;
+    }
+    // map.iter().max()
+    String::from("hwllo")
+}
