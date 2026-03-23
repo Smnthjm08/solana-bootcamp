@@ -1,6 +1,20 @@
-use std::collections::HashSet;
+mod mod_01_hello_rust;
+mod mod_02_datatypes;
+use std::collections::{HashMap, HashSet};
 
 fn main() {
+    // module 01
+    mod_01_hello_rust::hello_rust();
+    mod_01_hello_rust::declaring_variables();
+    mod_01_hello_rust::sum_to(10);
+    mod_01_hello_rust::transform_input("25");
+    // practice
+    mod_01_hello_rust::convert_temperature("23");
+    mod_01_hello_rust::process_greeting("23");
+
+    // module 02
+    mod_02_datatypes::multiply(23, 234);
+
     println!("Hello, world!");
     max_of_three(4, 66, 5);
     abs_value(33);
@@ -37,6 +51,12 @@ fn main() {
     while let Some(n) = countdown.next() {
         println!("count: {}", n);
     }
+
+    most_frequent("A for apple and B for banana and C for cat");
+
+    // diagonal_sum("1,2,3;4,5,6;7,8,9");
+
+    // mutable_borrowing_double_all(&mut [1,3,4,5]);
 }
 
 // functions with return value
@@ -256,7 +276,11 @@ fn unique_word_count(s: &str) -> usize {
 }
 
 fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
-    if x.len() >= y.len() { x } else { y }
+    if x.len() >= y.len() {
+        x
+    } else {
+        y
+    }
 }
 
 fn trim_prefix<'a>(s: &'a str, prefix: &str) -> &'a str {
@@ -359,14 +383,96 @@ impl Iterator for Countdown {
     }
 }
 
-// TODO capstone pending
-use std::collections::HashMap;
-
 fn most_frequent(s: &str) -> String {
     let mut map = HashMap::new();
-    for i in s.split_whitespace() {
-        *map.entry(i).or_insert(0) += 1;
+    let words = s.to_lowercase();
+
+    for word in words.split_whitespace() {
+        *map.entry(word).or_insert(0) += 1;
     }
-    // map.iter().max()
-    String::from("hwllo")
+
+    map.iter()
+        .max_by_key(|&(_, count)| count)
+        .map(|(word, _)| (*word).to_string())
+        .unwrap()
+}
+
+fn diagonal_sum(input: &str) -> i32 {
+    let grid: Vec<Vec<i32>> = input
+        .split(';')
+        .map(|row| {
+            row.split_whitespace()
+                .map(|x| x.parse::<i32>().unwrap())
+                .collect()
+        })
+        .collect();
+
+    let n = grid.len();
+    let mut sum = 0;
+
+    for i in 0..n {
+        sum += grid[i][i];
+        sum += grid[i][n - 1 - i];
+    }
+
+    if n % 2 == 1 {
+        sum -= grid[n / 2][n / 2];
+    }
+
+    sum
+}
+
+fn evaluate(expr: &str) -> Result<i32, String> {
+    let expr = expr.trim();
+
+    if expr.chars().any(|c| c.is_alphabetic()) {
+        return Err("invalid expression".into());
+    }
+
+    if expr.chars().any(|c| !c.is_ascii_digit() && !"+-*/ ".contains(c)) {
+        return Err("unknown operator".into());
+    }
+
+    let (left, right, operator) = if let Some(pos) = expr.find('+') {
+        (&expr[..pos], &expr[pos + 1..], '+')
+    } else if let Some(pos) = expr.find('-') {
+        (&expr[..pos], &expr[pos + 1..], '-')
+    } else if let Some(pos) = expr.find('*') {
+        (&expr[..pos], &expr[pos + 1..], '*')
+    } else if let Some(pos) = expr.find('/') {
+        (&expr[..pos], &expr[pos + 1..], '/')
+    } else {
+        return Err("unknown operator".into());
+    };
+
+    if left.trim().is_empty() || right.trim().is_empty() {
+        return Err("invalid expression".into());
+    }
+
+    let a: i32 = left.trim().parse().map_err(|_| "invalid expression")?;
+    let b: i32 = right.trim().parse().map_err(|_| "invalid expression")?;
+
+    let result = match operator {
+        '+' => a + b,
+        '-' => a - b,
+        '*' => a * b,
+        '/' => {
+            if b == 0 {
+                return Err("division by zero".into());
+            }
+            a / b
+        }
+        _ => return Err("invalid expression".into()),
+    };
+
+    Ok(result)
+}
+
+// fn mutable_borrowing_double_all(){
+// }
+
+fn mutable_borrowing_double_all(nums: &mut Vec<i32>) {
+    for x in nums {
+        *x *= 2;
+    }
 }
