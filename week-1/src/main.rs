@@ -1,33 +1,42 @@
-mod mod_01_hello_rust;
-mod mod_02_datatypes;
 use std::collections::{HashMap, HashSet};
+
+mod modules;
 
 fn main() {
     // module 01
-    mod_01_hello_rust::hello_rust();
-    mod_01_hello_rust::declaring_variables();
-    mod_01_hello_rust::sum_to(10);
-    mod_01_hello_rust::transform_input("25");
+    modules::mod_01_hello_rust::hello_rust();
+    modules::mod_01_hello_rust::declaring_variables();
+    modules::mod_01_hello_rust::sum_to(10);
+    modules::mod_01_hello_rust::transform_input("25");
     // practice
-    mod_01_hello_rust::convert_temperature("23");
-    mod_01_hello_rust::process_greeting("23");
+    modules::mod_01_hello_rust::convert_temperature("23");
+    modules::mod_01_hello_rust::process_greeting("23");
 
     // module 02
-    mod_02_datatypes::multiply(23, 234);
+    modules::mod_02_datatypes::multiply(23, 234);
+    modules::mod_02_datatypes::swap(23, 26);
+    modules::mod_02_datatypes::first_last(&[23, 34, 54, 54]);
+    // practice
+    modules::mod_02_datatypes::middle_element(&[23, 34, 54, 54]);
 
-    println!("Hello, world!");
-    max_of_three(4, 66, 5);
-    abs_value(33);
-    factorial(2);
-    fizzbuzz(23);
-    join_strings(String::from("Hello"), String::from("Rust!"));
-    count_chars("1");
-    // double_all(&mut [1, 2, 3].to_vec());
-    first_word("qwe err e eew");
-    use_rectangle();
+    // module 03
+    modules::mod_03_functions::max_of_three(4, 66, 5);
+    modules::mod_03_functions::abs_value(33);
+    modules::mod_03_functions::factorial(2);
+    modules::mod_03_functions::fizzbuzz(15);
+
+    // module 04
+    modules::mod_04_owrship_borrow::join_strings(String::from("Hello"), String::from("Rust!"));
+    modules::mod_04_owrship_borrow::count_chars("1");
+    modules::mod_04_owrship_borrow::double_all(&mut vec![2, 34, 4, 3]);
+    modules::mod_04_owrship_borrow::first_word("one two three");
+
+    // module 05
+    modules::mod_05_struct_methods::rect_area(23, 34);
+    // modules::mod_05_struct_methods::use_rectangle()
+
     coin_value("penny");
     safe_divide(4, 0);
-    println!("area of rect: {}", rect_area(100, 100));
     println!("total marks {}", get_grade(60));
     // println!("total marks {}", parse_number("3435"));
     let _ = parse_number("2432");
@@ -57,102 +66,6 @@ fn main() {
     // diagonal_sum("1,2,3;4,5,6;7,8,9");
 
     // mutable_borrowing_double_all(&mut [1,3,4,5]);
-}
-
-// functions with return value
-fn max_of_three(a: i32, b: i32, c: i32) -> i32 {
-    if a >= b && a >= c {
-        a
-    } else if b >= a && b >= c {
-        b
-    } else {
-        c
-    }
-}
-
-// if Returns a Value
-fn abs_value(n: i32) -> i32 {
-    // n.abs()
-    n.abs()
-}
-
-fn factorial(n: u64) -> u64 {
-    // Compute n factorial
-    let mut num = n;
-    let mut result = 1;
-    while num >= 1 {
-        result *= num;
-        num -= 1;
-    }
-    result
-}
-
-fn fizzbuzz(n: i32) -> String {
-    if n % 5 == 0 && n % 3 == 0 {
-        String::from("FizzBuzz")
-    } else if n % 5 == 0 {
-        String::from("Fizz")
-    } else if n % 3 == 0 {
-        String::from("Buzz")
-    } else {
-        n.to_string()
-    }
-}
-
-fn join_strings(a: String, b: String) -> String {
-    a + " " + &b
-}
-
-fn count_chars(s: &str) -> usize {
-    let length = s.len();
-    length
-}
-
-// fn double_all(nums: &mut Vec<i32>) {
-//     // Double each element in place
-//     let mut my_vec = vec![];
-
-//     for x in nums{
-//         my_vec.push(*x * 2);
-//     }
-//     my_vec
-// }
-
-fn first_word(s: &str) -> String {
-    for i in s.split_whitespace() {
-        println!("{}", i);
-        return i.to_string();
-    }
-    String::new()
-}
-
-struct Rectangle {
-    // Define width and height fields
-    width: i32,
-    height: i32,
-}
-
-impl Rectangle {
-    fn area(&self) -> i32 {
-        self.width * self.height
-    }
-
-    fn is_square(&self) -> bool {
-        self.width == self.height
-    }
-}
-
-fn rect_area(w: i32, h: i32) -> i32 {
-    // Create a Rectangle and return its area
-    w * h
-}
-
-fn use_rectangle() -> (i32, bool) {
-    let rect = Rectangle {
-        width: 10,
-        height: 10,
-    };
-    return (rect.area(), rect.is_square());
 }
 
 // impl Rectangle {
@@ -429,7 +342,10 @@ fn evaluate(expr: &str) -> Result<i32, String> {
         return Err("invalid expression".into());
     }
 
-    if expr.chars().any(|c| !c.is_ascii_digit() && !"+-*/ ".contains(c)) {
+    if expr
+        .chars()
+        .any(|c| !c.is_ascii_digit() && !"+-*/ ".contains(c))
+    {
         return Err("unknown operator".into());
     }
 
