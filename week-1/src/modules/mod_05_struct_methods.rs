@@ -21,7 +21,7 @@ impl Rectangle {
         self.width == self.height
     }
 
-    pub fn square(size: i32) -> Self {
+    pub fn _square(size: i32) -> Self {
         Self {
             width: size,
             height: size,
@@ -29,10 +29,36 @@ impl Rectangle {
     }
 }
 
-pub fn use_rectangle() -> (i32, bool) {
+pub fn _use_rectangle() -> (i32, bool) {
     let rect = Rectangle {
         width: 10,
         height: 10,
     };
     (rect.area(), rect.is_square())
 }
+
+pub fn find_max_consecutive_ones(nums: Vec<i32>) -> i32 {
+    let mut max_len = 0;
+    let mut curr_len = 0;
+
+    for num in nums {
+        if num == 1 {
+            curr_len += 1;
+            max_len = max_len.max(curr_len);
+        } else {
+            curr_len = 0;
+        }
+    }
+
+    max_len
+}
+
+  pub fn shuffle(nums: Vec<i32>, n: i32) -> Vec<i32> {
+      let n = n as usize;
+      let mut res = vec![];
+      for i in 0..n {
+          res.push(nums[i]);
+          res.push(nums[n + i]);
+      }
+      res
+  }

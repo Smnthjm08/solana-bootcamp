@@ -33,7 +33,7 @@ fn main() {
 
     // module 05
     modules::mod_05_struct_methods::rect_area(23, 34);
-    // modules::mod_05_struct_methods::use_rectangle()
+    modules::mod_05_struct_methods::find_max_consecutive_ones(vec![2,3,4,5,6]);
 
     coin_value("penny");
     safe_divide(4, 0);
@@ -391,4 +391,17 @@ fn mutable_borrowing_double_all(nums: &mut Vec<i32>) {
     for x in nums {
         *x *= 2;
     }
+}
+
+// Input: nums = [1,2,2,4]
+// Output: [2,3]
+pub fn find_error_nums(nums: Vec<i32>) -> Vec<i32> {
+    let mut dup_count = 0;
+    let mut missing_num = 0;
+
+    for i in 0..nums.len(){
+        
+    }
+
+    vec![]
 }
