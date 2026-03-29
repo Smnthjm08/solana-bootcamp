@@ -16,6 +16,7 @@ pub fn list_sum(list: &List) -> i32 {
 }
 
 // Implement Deref for Wrapper<T>
+#[warn(dead_code)]
 struct Wrapper<T>(T);
 
 impl<T> Deref for Wrapper<T> {

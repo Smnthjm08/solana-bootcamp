@@ -1,3 +1,8 @@
 pub mod mod_01_smart_pointers;
-
+pub mod mod_02_dyn;
+pub mod mod_03_advanced_trait;
+pub mod mod_04_advanced_types;
+pub mod mod_05_ptrn_matching;
+pub mod mod_06_unsafe_rust;
 pub mod mod_07_dec_macros;
+pub mod mod_08_concurrency;
