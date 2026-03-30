@@ -48,12 +48,12 @@ pub fn multiply_three(a: i32, b: i32, c: i32) -> i32 {
 }
 
 // Define the max! macro with repetitions
-macro_rules! max { 
+macro_rules! max {
     ($a:expr, $b:expr, $c:expr) => {
         $a.max($b).max($c)
-    }
- }
+    };
+}
 
 pub fn find_max(a: i32, b: i32, c: i32) -> i32 {
-    max!(a,b,c)
+    max!(a, b, c)
 }

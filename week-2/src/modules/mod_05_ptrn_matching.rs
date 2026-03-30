@@ -1,5 +1,5 @@
 // parsing patterns
-fn parse_command(input: &str) -> String {
+pub fn parse_command(input: &str) -> String {
     let tokens: Vec<&str> = input.split_whitespace().collect();
 
     // Write fn parse_command(input: &str) -> String:
@@ -31,7 +31,7 @@ fn parse_command(input: &str) -> String {
 }
 
 // classifying
-fn classify(n: i32) -> String {
+pub fn classify(n: i32) -> String {
     match n {
         0 => "zero".to_string(),
         val @ 1..=10 => format!("small: {}", val),
