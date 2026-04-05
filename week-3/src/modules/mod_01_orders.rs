@@ -1,35 +1,4 @@
-// process_incoming_order: The gateway to your exchange.
-//   Every order is validated, then classified.
-//
-// INPUT:
-//   order_type: &str → "MARKET" or "LIMIT"
-//   side: &str       → "BUY" or "SELL"
-//   price: u64       → limit price (0 for market orders)
-//   qty: u64         → quantity to trade
-//   best_bid: u64    → highest resting buy price on the book
-//   best_ask: u64    → lowest resting sell price on the book
-//
-// OUTPUT:
-//   &'static str → one of: "REJECTED", "IMMEDIATE", "RESTING"
-//
-// STEP 1 — Validate:
-//   - order_type must be "MARKET" or "LIMIT"  → else REJECTED
-//   - side must be "BUY" or "SELL"            → else REJECTED
-//   - qty must be > 0                         → else REJECTED
-//   - if LIMIT: price must be > 0             → else REJECTED
-//
-// STEP 2 — Classify:
-//   - MARKET orders → always IMMEDIATE
-//   - LIMIT BUY  where price >= best_ask → IMMEDIATE
-//   - LIMIT SELL where price <= best_bid → IMMEDIATE
-//   - otherwise → RESTING
-//
-// EXAMPLES:
-//   ("LIMIT", "BUY", 110, 10, 100, 105) → "IMMEDIATE"  (110 >= 105)
-//   ("LIMIT", "BUY", 99, 10, 100, 105)  → "RESTING"    (99 < 105)
-//   ("MARKET", "SELL", 0, 5, 100, 105)  → "IMMEDIATE"   (market = always)
-//   ("LIMIT", "HOLD", 100, 10, 100, 105) → "REJECTED"   (bad side)
-//
+
 pub fn process_incoming_order(
     order_type: &str,
     side: &str,
@@ -79,28 +48,6 @@ pub fn process_incoming_order(
     "RESTING"
 }
 
-// order_economics: Computes the four key metrics for a trade.
-//
-// INPUT:
-//   best_bid: u64  → highest resting buy price (e.g., 100)
-//   best_ask: u64  → lowest resting sell price (e.g., 105)
-//   price: u64     → the order's execution price (e.g., 100)
-//   qty: u64       → quantity to trade (e.g., 10)
-//   fee_bps: u64   → fee in basis points (e.g., 30 means 0.30%)
-//                     1 bps = 1/10,000 of the value
-//
-// OUTPUT:
-//   (u64, u64, u64, u64) → (spread, midprice, notional, fee)
-//
-// FORMULAS:
-//   spread   = best_ask - best_bid
-//   midprice = (best_bid + best_ask) / 2      (integer division)
-//   notional = price * qty
-//   fee      = notional * fee_bps / 10000     (integer division)
-//
-// EXAMPLE:
-//   order_economics(100, 105, 100, 10, 30) → (5, 102, 1000, 3)
-//
 pub fn order_economics(
     best_bid: u64,
     best_ask: u64,
