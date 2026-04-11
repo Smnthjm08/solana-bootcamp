@@ -18,21 +18,11 @@
 
 use std::cmp::min;
 
-use crate::modules::mod_01_markets::WinningOutcome;
-
-pub struct Market {
-    // pub authority: Pubkey,        // who can settle this market //commented
-    pub market_id: u32,                          // unique identifier
-    pub settlement_deadline: i64,                // unix timestamp — when betting stops
-    pub is_settled: bool,                        // has the winner been declared?
-    pub winning_outcome: Option<WinningOutcome>, //commented
-    pub total_collateral_locked: u64,            // running total of collateral in vault
-                                                 // ... plus token mint addresses, vault address, PDA bump
-}
+use crate::modules::mod_01_markets::Market;
 
 pub struct UserState {
-    balance_a: u64,
-    balance_b: u64,
+   pub balance_a: u64,
+   pub balance_b: u64,
 }
 
 fn split_tokens(

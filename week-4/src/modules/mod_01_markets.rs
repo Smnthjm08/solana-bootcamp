@@ -14,15 +14,17 @@
 //   Err("InvalidSettlementDeadline") if deadline <= current_time
 //
 
-// use solana_program::pubkey::Pubkey;
+use std::str::FromStr;
+
+use solana_program::pubkey::Pubkey;
 
 pub enum WinningOutcome {
-    Yes,
-    No,
+   OutcomeA,
+   OutcomeB,
 }
 
 pub struct Market {
-    // pub authority: Pubkey,        // who can settle this market //commented
+    pub authority: Pubkey,        // who can settle this market //commented
     pub market_id: u32,                          // unique identifier
     pub settlement_deadline: i64,                // unix timestamp — when betting stops
     pub is_settled: bool,                        // has the winner been declared?
@@ -51,11 +53,13 @@ fn initialize_market(
     //   - winning_outcome = None
     //   - total_collateral_locked = 0
 
-    // let authority = "11111111111111111111111111111111"; // Valid base58 Pubkey
+    let authority_str = "11111111111111111111111111111111"; // Valid base58 Pubkey
+    let authority = Pubkey::from_str(authority_str)
+        .map_err(|_| "InvalidAuthorityAddress")?; 
 
     let market = Market {
         market_id,
-        // authority: authority.to_string(), //commented
+        authority, //commented let authority_pubkey = Pubkey::from_str(&authority.to_string())
         settlement_deadline,
         is_settled: false,
         winning_outcome: None, //commented
